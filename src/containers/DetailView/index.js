@@ -11,7 +11,7 @@ function DetailView({ getDetailData }) {
 
   useEffect(() => {
     getDetailData({ productID })
-  }, [])
+  }, [getDetailData, productID])
 
   return (
     <div>

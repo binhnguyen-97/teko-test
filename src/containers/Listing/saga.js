@@ -8,8 +8,8 @@ import { GET_LISTING_DATA } from "./constants";
 
 export function* getListingDataSaga({ payload }) {
   try {
-    const { query } = payload;
-    const respone = yield call(request, `${config.apiUrl}/search/?channel=pv_online&terminal=phongvu&publishStatus=true&q=${query || ''}`, {
+    const { query, page } = payload;
+    const respone = yield call(request, `${config.apiUrl}/search/?channel=pv_online&terminal=phongvu&publishStatus=true&_limit=${config.pageSize}&_page=${page || 1}&q=${query || ''}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -18,8 +18,9 @@ export function* getListingDataSaga({ payload }) {
     if (respone.code !== 'SUCCESS') {
       yield put(getListingDataFail('Some things does\'t work'));
     }
-    yield put(getListingDataSuccess(respone.result));
+    yield put(getListingDataSuccess(respone.result, respone.extra));
   } catch (error) {
+    console.error(error);
     yield put(getListingDataFail(error));
   }
 }

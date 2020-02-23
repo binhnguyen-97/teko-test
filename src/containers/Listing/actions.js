@@ -4,19 +4,21 @@ import {
   GET_LISTING_DATA_FAIL
 } from './constants';
 
-export const getListingData = ({ query }) => {
+export const getListingData = ({ query, page }) => {
   return {
     type: GET_LISTING_DATA,
     payload: {
-      query
+      query,
+      page
     }
   }
 }
-export const getListingDataSuccess = (data) => {
+export const getListingDataSuccess = (data, paging) => {
   return {
     type: GET_LISTING_DATA_SUCCESS,
     payload: {
-      products: data.products
+      products: data.products,
+      pagingData: paging
     }
   }
 }

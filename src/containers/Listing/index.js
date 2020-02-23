@@ -1,30 +1,53 @@
-import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, Fragment } from 'react';
 import { connect } from 'react-redux'
+
+import ProductItem from '../../components/ProductItem'
+import PaginationBar from '../../components/PaginationBar'
 
 import { getListingData } from './actions';
 
+import useQuery from '../../utils/hooks/useQuery'
+
 import '../../styles/listing.scss'
 
-function Listing({ getListingData, listing }) {
+function Listing({ getListingData, productList, totalPage }) {
+  let queryHook = useQuery();
+  const query = queryHook.get("q");
+  const page = queryHook.get("page");
 
   useEffect(() => {
-    getListingData({ text: 'Hello Sage' })
-  }, [])
+    getListingData({ query, page });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [getListingData, query, page])
 
   return (
-    <div>
-      This is Listing page
-      <Link to='/1809504'>
-        Go to detail view
-      </Link>
-    </div>
+    <Fragment>
+      <div className="listing__container">
+        {
+          productList.map(product => {
+            return <ProductItem
+              key={`product_${product.sku}`}
+              id={product.sku}
+              name={product.displayName || product.name}
+              images={product.images}
+              status={product.status}
+              price={product.price}
+            />
+          })
+        }
+      </div>
+      <PaginationBar
+        currentPage={parseInt(page, 10)}
+        totalPage={totalPage}
+      />
+    </Fragment>
   );
 }
 
 const mapStateToProps = state => {
   return {
-    productList: state.listing.productList
+    productList: state.listing.productList,
+    totalPage: state.listing.totalPage,
   }
 }
 const mapDispatchToProps = dispatch => {
