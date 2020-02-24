@@ -11,7 +11,6 @@ export default (state = initialState, { type, payload }) => {
     case GET_DETAIL_DATA:
       return { ...state, loading: true, err: '' }
     case GET_DETAIL_DATA_SUCCESS:
-      console.info(payload.product)
       return { ...state, productDetail: payload.product, loading: false }
     case GET_DETAIL_DATA_FAIL:
       return { ...state, err: payload.error, loading: false }

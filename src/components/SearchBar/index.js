@@ -3,12 +3,13 @@ import { useHistory } from "react-router-dom";
 
 import { queryBuilder, queryStringToObject } from '../../utils/helpers'; 
 
+import useQuery from '../../utils/hooks/useQuery'
 
 function SearchBar() {
   const history = useHistory();
-
-  const [query, setQuery] = useState('');
-
+  const querySelector = useQuery();
+  const currentQuery = querySelector.get("q");
+  const [query, setQuery] = useState(currentQuery || '');
 
   const searchWithQuery = () => {
     const currentQuery = queryStringToObject(history.location.search);
@@ -28,8 +29,9 @@ function SearchBar() {
 
   return (
     <div className="search-bar">
-      <input 
+      <input
         type="text" 
+        value={query}
         onChange={(event) => setQuery(event.target.value)}
         onKeyPress={onKeyPress}
         placeholder="Nhập tên, mã sản phẩm" 

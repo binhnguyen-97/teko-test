@@ -36,11 +36,11 @@
         font-size: 15px;
         line-height: 20px;
         letter-spacing: -0.4px;
-        &--selling {
+        &--selling, &--old-price {
           color: $priceColor;
           font-weight: 500;
-          display: inline-block;
           position: relative;
+          display: inline-block;
           &::after {
             content: "đ";
             font-size: 0.8em;
@@ -50,8 +50,26 @@
             top: -2px;
           }
         }
+        &--old-price {
+          color: $inactiveColor;
+          text-decoration: line-through;
+          &::after {
+            color: $inactiveColor;
+          }
+        }
         &--stop-selling {
           color: $inactiveColor;
+        }
+        &--promote {
+          margin-left: 10px;
+          color: #ffffff;
+          background-color: $navColor;
+          clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 15% 100%, 0 50%);
+          display: inline-block;
+          border-radius: 3px;
+          padding-left: 7px;
+          padding-right: 3px;
+          font-size: 0.9em;
         }
       }
     }

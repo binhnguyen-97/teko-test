@@ -2,13 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { getDisplayImage, formatPrice } from '../../utils/listing_utils';
+import { getDisplayImage, formatPrice, getPromotionInfo } from '../../utils/helpers';
 import { SALE_STATUS } from '../../utils/constants';
 
 
-function ProductItem({ name, images, status, price, id }) {
+function ProductItem({ name, images, status, price = {}, id }) {
 
-  const isSelling = status.sale === SALE_STATUS.DANG_BAN;
+  const isSelling = status.sale === SALE_STATUS.DANG_BAN && price.bestPrice !== 0;
+
+  const { isSale, percentage } = getPromotionInfo(price);
   return (
     <Link
       className="product"
@@ -19,12 +21,18 @@ function ProductItem({ name, images, status, price, id }) {
         src={getDisplayImage(images)}
         alt='product-thumbnail' />
       <div className="product__info">
-        <div className="Info__name">
+        <div className="info__name">
           {name}
         </div>
         <div className={`info__price info__price--${isSelling ? 'selling' : 'stop-selling'}`}>
-          {isSelling ? formatPrice(price.sellPrice) : "Ngưng kinh doanh"}
+          {isSelling ? formatPrice(price.bestPrice) : "Ngưng kinh doanh"}
         </div>
+        <br />
+        {isSale && <><div className={`info__price info__price--old-price`}>
+          {formatPrice(price.finalPrice)}
+        </div>
+          <div className="info__price--promote">-{percentage}%</div>
+        </>}
       </div>
     </Link>
   )

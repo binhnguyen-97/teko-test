@@ -1,31 +1,48 @@
-import React, { useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import React, { useEffect, lazy } from 'react';
+import { useParams } from 'react-router-dom';
+import { Helmet } from "react-helmet";
 import { connect } from 'react-redux'
+import isEmpty from 'lodash.isempty';
 
 import { getDetailData } from './actions';
 
+import { sortByPriority } from '../../utils/helpers';
+
 import '../../styles/detailview.scss'
 
-function DetailView({ getDetailData }) {
+const ProductDetail = lazy(() => import('../../components/ProductDetail'));
+const Spinner = lazy(() => import('../../components/Spinner'));
+
+
+function DetailView({ getDetailData, productDetail }) {
   const { productID } = useParams();
 
   useEffect(() => {
     getDetailData({ productID })
   }, [getDetailData, productID])
-
-  return (
+  return (isEmpty(productDetail) ? 
+    <Spinner/> :
     <div>
-      This is Detail page
-      <Link to='/12'>
-        Go to detail view
-      </Link>
+      <Helmet>
+        <title>{productDetail.seoInfo.metaTitle}</title>
+        <meta name="description" content={productDetail.seoInfo.metaDescription} />
+      </Helmet>
+      <ProductDetail 
+        productID={productDetail.sku}
+        images={sortByPriority(productDetail.images)}
+        name={productDetail.displayName ?? productDetail.name}
+        status={productDetail.status}
+        promotionPrice={productDetail.promotionPrices[0]}
+        attributeGroups={productDetail.attributeGroups}
+        seoInfo={productDetail.seoInfo}
+      />
     </div>
   );
 }
 
 const mapStateToProps = state => {
   return {
-    productList: state.listing.productList
+    productDetail: state.productDetail.productDetail
   }
 }
 const mapDispatchToProps = dispatch => {

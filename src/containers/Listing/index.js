@@ -1,15 +1,17 @@
-import React, { useEffect, Fragment } from 'react';
+import React, { useEffect, Fragment, lazy } from 'react';
 import { Helmet } from "react-helmet";
 import { connect } from 'react-redux'
-
-import ProductItem from '../../components/ProductItem'
-import PaginationBar from '../../components/PaginationBar'
+import isEmpty from 'lodash.isempty';
 
 import { getListingData } from './actions';
 
 import useQuery from '../../utils/hooks/useQuery'
 
 import '../../styles/listing.scss'
+
+const Spinner = lazy(() => import('../../components/Spinner'));
+const ProductItem = lazy(() => import('../../components/ProductItem'));
+const PaginationBar = lazy(() => import('../../components/PaginationBar'));
 
 function Listing({ getListingData, productList, totalPage }) {
   let queryHook = useQuery();
@@ -21,7 +23,7 @@ function Listing({ getListingData, productList, totalPage }) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [getListingData, query, page])
 
-  return (
+  return ( isEmpty(productList) ? <Spinner/> : 
     <Fragment>
       <Helmet>
         <title>Danh sách sản phẩm</title>
@@ -36,7 +38,7 @@ function Listing({ getListingData, productList, totalPage }) {
               name={product.displayName || product.name}
               images={product.images}
               status={product.status}
-              price={product.price}
+              price={product.promotionPrices[0]}
             />
           })
         }
