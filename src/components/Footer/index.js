@@ -1,9 +1,11 @@
 import React from 'react'
 
+import '../../styles/footer.scss';
+
 function Footer() {
   return (
     <footer>
-      This is Footer
+      @Coryright 2020
     </footer>
   )
 }

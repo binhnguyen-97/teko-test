@@ -1,0 +1,61 @@
+@import 'variables';
+
+header {
+  position: fixed;
+  width: 100vw;
+  z-index: 99;
+  nav {
+    display: flex;
+    align-items: center;
+    background-color: $navColor;
+    padding: 0px 12px;
+    min-height: $navHeight;
+    .back-button {
+      color: #ffffff;
+      padding: 2px;
+      height: 24px;
+      width: 24px;
+      background-image: url('./images//arrow.png');
+      background-size: 24px 24px;
+      background-repeat: no-repeat;
+    }
+    .search-bar {
+      flex: 1;
+      display: flex;
+      position: relative;
+      ::-webkit-input-placeholder { /* Edge */
+        color: $inactiveColor;
+      }
+      
+      :-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color: $inactiveColor;
+      }
+      
+      ::placeholder {
+        color: $inactiveColor;
+      }
+      &__input {
+        flex: 1;
+        display: inline-block;
+        border-radius: 10px;
+        border: none;
+        padding-top: 8px;
+        padding-bottom: 6px;
+        padding-left: 40px;
+        font-size: 14px;
+        box-shadow: 3px 4px 6px -6px #000000;
+      }
+      &__icon {
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        left: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        background-image: url('./images/search-icon.png');
+        background-size: 24px 24px;
+        background-repeat: no-repeat;
+      }
+    }
+  }
+}

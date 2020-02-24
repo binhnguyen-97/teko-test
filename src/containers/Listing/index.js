@@ -1,4 +1,5 @@
 import React, { useEffect, Fragment } from 'react';
+import { Helmet } from "react-helmet";
 import { connect } from 'react-redux'
 
 import ProductItem from '../../components/ProductItem'
@@ -22,6 +23,10 @@ function Listing({ getListingData, productList, totalPage }) {
 
   return (
     <Fragment>
+      <Helmet>
+        <title>Danh sách sản phẩm</title>
+        <meta name="description" content="Trang thông tin danh sách các sản phẩm hiện đang có ở hệ thống" />
+      </Helmet>
       <div className="listing__container">
         {
           productList.map(product => {
@@ -37,7 +42,7 @@ function Listing({ getListingData, productList, totalPage }) {
         }
       </div>
       <PaginationBar
-        currentPage={parseInt(page, 10)}
+        currentPage={parseInt(page, 10) || 1}
         totalPage={totalPage}
       />
     </Fragment>
