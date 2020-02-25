@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import isEmpty from 'lodash.isempty';
 
 import { getDetailData } from './actions';
+import { addToCart } from '../../modules/actions/cart';
 
 import { sortByPriority } from '../../utils/helpers';
 
@@ -14,7 +15,7 @@ const ProductDetail = lazy(() => import('../../components/ProductDetail'));
 const Spinner = lazy(() => import('../../components/Spinner'));
 
 
-function DetailView({ getDetailData, productDetail }) {
+function DetailView({ getDetailData, productDetail, addToCart, cart, addSuccess }) {
   const { productID } = useParams();
 
   useEffect(() => {
@@ -35,6 +36,9 @@ function DetailView({ getDetailData, productDetail }) {
         promotionPrice={productDetail.promotionPrices[0]}
         attributeGroups={productDetail.attributeGroups}
         seoInfo={productDetail.seoInfo}
+        addToCart={addToCart}
+        cart={cart}
+        addSuccess={addSuccess}
       />
     </div>
   );
@@ -42,12 +46,15 @@ function DetailView({ getDetailData, productDetail }) {
 
 const mapStateToProps = state => {
   return {
-    productDetail: state.productDetail.productDetail
+    productDetail: state.productDetail.productDetail,
+    cart: state.cart.cart,
+    addSuccess: state.cart.success,
   }
 }
 const mapDispatchToProps = dispatch => {
   return {
     getDetailData: (payload) => dispatch(getDetailData(payload)),
+    addToCart: (payload) => dispatch(addToCart(payload)),
   }
 }
 
